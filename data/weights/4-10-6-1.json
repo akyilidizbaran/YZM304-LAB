@@ -1,0 +1,11 @@
+{
+  "key": "4-10-6-1",
+  "layer_sizes": [
+    4,
+    10,
+    6,
+    1
+  ],
+  "random_state": 42,
+  "weight_scale": 1.0
+}

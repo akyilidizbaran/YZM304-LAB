@@ -70,13 +70,13 @@ def save_markdown_summary(path: Path, rows: list[dict[str, Any]], best_experimen
         "",
         f"Best experiment: `{best_experiment}`",
         "",
-        "| Experiment | Model | Standardized | Hidden Layers | Steps | Val Acc | Test Acc | Test F1 |",
-        "| --- | --- | --- | --- | ---: | ---: | ---: | ---: |",
+        "| Experiment | Backend | Train Fraction | Standardized | Hidden Layers | Steps | Params | Val Acc | Test Acc | Test F1 |",
+        "| --- | --- | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in rows:
         lines.append(
-            "| {experiment_name} | {model_type} | {standardize} | {hidden_layers} | {steps} | "
-            "{validation_accuracy:.4f} | {test_accuracy:.4f} | {test_f1_score:.4f} |".format(**row)
+            "| {experiment_name} | {backend} | {train_fraction:.2f} | {standardize} | {hidden_layers} | {steps} | "
+            "{parameter_count} | {validation_accuracy:.4f} | {test_accuracy:.4f} | {test_f1_score:.4f} |".format(**row)
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

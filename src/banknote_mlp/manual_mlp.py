@@ -21,6 +21,8 @@ class ManualMLPClassifier:
     weight_scale: float = 1.0
     gradient_clip_value: float | None = 5.0
     weight_clip_value: float | None = 10.0
+    initial_weights: list[np.ndarray] | None = None
+    initial_biases: list[np.ndarray] | None = None
     history_: dict[str, list[float | int]] = field(default_factory=dict, init=False)
     weights_: list[np.ndarray] = field(default_factory=list, init=False)
     biases_: list[np.ndarray] = field(default_factory=list, init=False)
@@ -78,6 +80,11 @@ class ManualMLPClassifier:
         return float(np.mean(self.predict(X) == y))
 
     def _initialize_parameters(self, input_size: int) -> None:
+        if self.initial_weights is not None and self.initial_biases is not None:
+            self.weights_ = [np.array(weight, dtype=np.float64, copy=True) for weight in self.initial_weights]
+            self.biases_ = [np.array(bias, dtype=np.float64, copy=True).reshape(-1) for bias in self.initial_biases]
+            return
+
         rng = np.random.default_rng(self.random_state)
         layer_sizes = (input_size, *self.hidden_layers, 1)
         self.weights_ = []
@@ -220,3 +227,7 @@ class ManualMLPClassifier:
 
     def _accuracy(self, y_true: np.ndarray, y_pred: np.ndarray) -> float:
         return float(np.mean((y_pred >= self.threshold).astype(np.int64) == y_true.astype(np.int64)))
+
+    @property
+    def parameter_count(self) -> int:
+        return int(sum(weight.size + bias.size for weight, bias in zip(self.weights_, self.biases_)))

@@ -13,5 +13,10 @@
     "train": 878,
     "validation": 220,
     "test": 274
+  },
+  "train_fraction_sizes": {
+    "0.50": 439,
+    "0.75": 658,
+    "1.00": 878
   }
 }

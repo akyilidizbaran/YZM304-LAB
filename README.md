@@ -1,10 +1,14 @@
 # YZM304-Banknote-MLP
 
-Ankara Üniversitesi Yapay Zeka ve Veri Mühendisliği `YZM304 Derin Öğrenme` dersi için hazırlanan birinci proje deposu. Bu repo, laboratuvarda geliştirilen tek gizli katmanlı MLP çalışmasını banknote authentication veri seti üzerinde düzenli, tekrar üretilebilir ve GitHub'a uygun bir yapıya taşımak için hazırlandı.
+Ankara Üniversitesi Yapay Zeka ve Veri Mühendisliği `YZM304 Derin Öğrenme` dersi için hazırlanan birinci proje deposu. Çalışma, laboratuvarda geliştirilen MLP örneğini tekrar üretilebilir bir repo yapısına taşır ve aynı veri ayrımı, aynı başlangıç ağırlıkları ve aynı tam-batch SGD hattı üzerinde manuel, `scikit-learn` ve `PyTorch` karşılaştırmalarını içerir.
 
 ## Introduction
 
-Bu çalışmanın amacı, banknot doğrulama veri seti üzerinde laboratuvarda kurulan iki katmanlı MLP modelini temel alarak eğitim, test ve iyileştirme deneylerini sistematik hale getirmektir. Proje yönergesine göre tek gizli katmanlı temel model korunmuş, doğrulama seti eklenmiş, daha derin bir manuel model ve `scikit-learn MLPClassifier` karşılaştırması aynı veri ayrımı üzerinde koşturulmuştur.
+Amaç, banknote authentication veri seti üzerinde kurulan temel MLP modelini sadece çalıştırmak değil, PDF yönergesindeki deneyleri izlenebilir artefaktlarla tekrar üretilebilir hale getirmektir. Bu sürümde üç kritik boşluk kapatıldı:
+
+- backendler arası aynı başlangıç ağırlıkları `data/weights/` altında kalıcı artefakt olarak üretildi,
+- `PyTorch` eşleniği eklendi,
+- veri miktarı etkisi için `%50 / %75 / %100` eğitim fraksiyonu deneyleri eklendi.
 
 ## Methods
 
@@ -14,37 +18,45 @@ Bu çalışmanın amacı, banknot doğrulama veri seti üzerinde laboratuvarda k
 - Problem tipi: ikili sınıflandırma
 - Özellikler: `variance`, `skewness`, `curtosis`, `entropy`
 - Hedef değişken: `class`
+- Toplam örnek sayısı: `1372`
+- Toplam sınıf dağılımı: `762` gerçek banknot, `610` sahte banknot
 
 ### Deney Ayarları
 
-Bu bölüm, mevcut laboratuvar notebook'undan çıkarılan başlangıç ayarlarının modüler deney hattına taşınmış halini içerir.
-
 - Veri karıştırma: `random_state=42`
-- Eğitim/doğrulama/test ayrımı: `0.64 / 0.16 / 0.20`
+- Eğitim/doğrulama/test ayrımı: `878 / 220 / 274`
+- Eğitim fraksiyonları: `0.50`, `0.75`, `1.00`
+- Fraksiyon yapısı: sınıf dengeli ve iç içe geçmiş alt kümeler
 - Giriş boyutu: `4`
 - Çıkış boyutu: `1`
-- Gizli katman sayısı: `1`
-- Başlangıç gizli nöron sayısı: `6`
-- Başlangıç eğitim adımı: `500`
-- Öğrenme oranı: `0.01`
-- Aktivasyonlar: gizli katmanda `tanh`, çıkışta `sigmoid`
+- Aktivasyonlar: gizli katmanlarda `tanh`, çıkışta `sigmoid`
 - Kayıp fonksiyonu: binary cross-entropy
-- Optimizasyon yaklaşımı: SGD tabanlı parametre güncellemesi
+- Optimizasyon: momentum kapalı, tam-batch SGD
 - Sınıf tahmin eşiği: `0.5`
-- Veri standardizasyonu: deney bazlı açık/kapalı
-- Seçim kuralı: en yüksek doğrulama doğruluğu, eşitlikte daha düşük adım sayısı
+- Seçim kuralı: en yüksek doğrulama doğruluğu, eşitlikte daha düşük adım sayısı, sonra daha düşük parametre sayısı
+
+### Ortak Split ve Ağırlık Artefaktları
+
+- Split manifesti: `data/splits/split_manifest.json`
+- Tek gizli katman başlangıç ağırlıkları: `data/weights/4-6-1.npz`
+- Derin model başlangıç ağırlıkları: `data/weights/4-10-6-1.npz`
+- Ağırlık metadataları: `data/weights/4-6-1.json`, `data/weights/4-10-6-1.json`
+
+Bu dosyalar, manuel model, `scikit-learn MLPClassifier` ve `PyTorch` modelinin aynı parametrelerden başlamasını sağlar. Standartlaştırılmış backend karşılaştırmaları tam olarak bu ortak artefaktlar üzerinden yürütülür.
 
 ### Repo Yapısı
 
 ```text
 .
 ├── data/raw/                         # Ham veri seti
-├── docs/assignment/                 # Ödev yönergesi
-├── notebooks/                       # Laboratuvar notebook'u ve deney notları
-├── reports/                         # Grafik, metrik ve veri ayrımı çıktıları
-├── src/banknote_mlp/                # Yeniden kullanılabilir Python modülleri
-├── tests/                           # Temel birim testleri
-├── PROJECT_MEMORY.md                # Kalıcı proje hafızası
+├── data/splits/                      # Sabit train/val/test ve fraksiyon manifesti
+├── data/weights/                     # Backendler arası paylaşılan başlangıç ağırlıkları
+├── docs/assignment/                  # Ödev yönergesi
+├── notebooks/                        # Laboratuvar notebook'u
+├── reports/                          # Grafik, metrik ve split çıktıları
+├── src/banknote_mlp/                 # Modüler deney kodu
+├── tests/                            # Birim testleri
+├── PROJECT_MEMORY.md                 # Yerel proje hafızası
 ├── README.md
 ├── requirements.txt
 └── requirements-notebook.txt
@@ -59,7 +71,7 @@ pip install -r requirements.txt
 PYTHONPATH=src python -m banknote_mlp.experiment
 ```
 
-Notebook ile çalışmak istersen:
+Notebook ile çalışmak için:
 
 ```bash
 pip install -r requirements-notebook.txt
@@ -68,33 +80,60 @@ jupyter notebook notebooks/one_hidden_layer_mlp.ipynb
 
 ### Uygulanan Deneyler
 
-- `manual_raw_baseline`: ham veri, tek gizli katman (`6` nöron), `500` adım
-- `manual_standardized_baseline`: standardize veri, tek gizli katman (`6` nöron), `1000` adım, `learning_rate=0.03`
-- `manual_regularized_deeper`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`
-- `sklearn_standardized_baseline`: standardize veri, `MLPClassifier(hidden_layer_sizes=(6,), solver="sgd")`, `1000` iterasyon
+- `manual_raw_baseline`: ham veri, tek gizli katman (`6`), `500` adım
+- `manual_standardized_baseline`: standardize veri, tek gizli katman (`6`), `1000` adım, `learning_rate=0.03`
+- `sklearn_standardized_baseline`: standardize veri, tek gizli katman (`6`), `1000` adım, `learning_rate=0.03`
+- `pytorch_standardized_baseline`: standardize veri, tek gizli katman (`6`), `1000` adım, `learning_rate=0.03`
+- `manual_regularized_deeper_data50`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`, eğitim verisinin `%50`si
+- `manual_regularized_deeper_data75`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`, eğitim verisinin `%75`i
+- `manual_regularized_deeper_data100`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`, eğitim verisinin tamamı
+- `sklearn_regularized_deeper`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`
+- `pytorch_regularized_deeper`: standardize veri, iki gizli katman (`10-6`), `1000` adım, `L2=0.001`
 
 ### Üretilen Artefaktlar
 
-- Karşılaştırma tablosu: `reports/metrics/experiment_comparison.csv`
-- Deney özeti: `reports/metrics/experiment_summary.md`
+- Tüm deneyler: `reports/metrics/experiment_comparison.csv`
+- Backend eşlenik karşılaştırması: `reports/metrics/backend_comparison.csv`
+- Markdown özet: `reports/metrics/experiment_summary.md`
 - JSON özet: `reports/metrics/experiment_summary.json`
-- Veri ayrımı özeti: `reports/models/data_split_summary.json`
+- Split özeti: `reports/models/data_split_summary.json`
 - Öğrenme eğrileri: `reports/figures/learning_curves.png`
 - Karmaşıklık matrisi görselleri: `reports/figures/*_confusion_matrix.png`
 
 ## Results
 
-Toplam `1372` örnek, `4` özellik ve sınıf dağılımı `762 / 610` olacak şekilde kullanıldı. Veri, `878` eğitim, `220` doğrulama ve `274` test örneğine ayrıldı. Deney sonuçları aşağıdadır:
+Veri, stratified sabit bir ayrımla `878` eğitim, `220` doğrulama ve `274` test örneğine bölündü. Fraksiyon deneylerinde eğitim örnek sayıları sırasıyla `439`, `658` ve `878` oldu.
 
-| Deney | Doğrulama Doğruluğu | Test Doğruluğu | Test F1 |
-| --- | ---: | ---: | ---: |
-| `manual_raw_baseline` | `0.9727` | `0.9635` | `0.9576` |
-| `manual_standardized_baseline` | `0.9636` | `0.9745` | `0.9719` |
-| `manual_regularized_deeper` | `0.9591` | `0.9708` | `0.9680` |
-| `sklearn_standardized_baseline` | `0.9591` | `0.9708` | `0.9677` |
+### Backend Karşılaştırması
 
-Seçim kuralına göre en yüksek doğrulama doğruluğunu verdiği için `manual_raw_baseline` en iyi deney olarak işaretlendi. Saf test başarımı açısından ise `manual_standardized_baseline` en yüksek sonucu verdi.
+| Konfigürasyon | Backend | Val Acc | Test Acc | Test F1 |
+| --- | --- | ---: | ---: | ---: |
+| Standardized baseline | `manual` | `0.9636` | `0.9745` | `0.9719` |
+| Standardized baseline | `sklearn` | `0.9636` | `0.9745` | `0.9719` |
+| Standardized baseline | `pytorch` | `0.9636` | `0.9745` | `0.9719` |
+| Deeper + L2 (`100%` train) | `manual` | `0.9591` | `0.9708` | `0.9680` |
+| Deeper + L2 (`100%` train) | `sklearn` | `0.9591` | `0.9708` | `0.9680` |
+| Deeper + L2 (`100%` train) | `pytorch` | `0.9591` | `0.9708` | `0.9680` |
+
+Bu tabloda üç backendin de aynı split ve aynı başlangıç ağırlıklarıyla birebir aynı sayılara ulaştığı görülüyor.
+
+### Veri Miktarı Etkisi
+
+| Deney | Train Fraction | Val Acc | Test Acc | Test F1 |
+| --- | ---: | ---: | ---: | ---: |
+| `manual_regularized_deeper_data50` | `0.50` | `0.9591` | `0.9745` | `0.9719` |
+| `manual_regularized_deeper_data75` | `0.75` | `0.9591` | `0.9708` | `0.9680` |
+| `manual_regularized_deeper_data100` | `1.00` | `0.9591` | `0.9708` | `0.9680` |
+
+### Genel Sonuç
+
+- Seçim kuralına göre en iyi deney: `manual_raw_baseline`
+- En yüksek doğrulama doğruluğu: `0.9727`
+- En yüksek test doğruluğu: `0.9745`
+- Aynı en yüksek test doğruluğunu veren deneyler: `manual_standardized_baseline`, `sklearn_standardized_baseline`, `pytorch_standardized_baseline`, `manual_regularized_deeper_data50`
 
 ## Discussion
 
-Sonuçlar, aynı veri ayrımı altında standardizasyon ve daha uzun eğitim süresinin test başarımını yükselttiğini gösteriyor. Bununla birlikte doğrulama setinde en güçlü sonuç ham veriyle çalışan temel manuel modelden geldi; bu da küçük veri koşullarında seçilen validasyon kesitinin model sıralamasını etkileyebildiğini gösteriyor. Derinleştirilmiş ve L2 regülarize edilmiş manuel model ile `scikit-learn` tabanlı model, tek gizli katmanlı standardize manuel modele oldukça yakın sonuç verdi. Sıradaki mantıklı genişletme, aynı çatıya `PyTorch` karşılaştırması, mini-batch eğitim ve ek regularization teknikleri eklemek olacaktır.
+En önemli teknik sonuç, backendler arası karşılaştırmanın artık yaklaşık değil birebir kurulmuş olmasıdır. Aynı split manifesti, aynı `.npz` ağırlık artefaktları ve aynı tam-batch SGD düzeni kullanıldığında manuel, `scikit-learn` ve `PyTorch` sonuçları eşleşti. Bu, karşılaştırmanın rastgele başlangıçtan veya farklı eğitim akışlarından etkilenmediğini gösterir.
+
+Veri miktarı deneyi daha ilginç bir tablo verdi. Derin ve L2 regülarize modelde `%50` eğitim fraksiyonu, doğrulama doğruluğunu artırmadan testte en yüksek sonuca ortak oldu. Bu sonucu tek bir split üzerinde gördüğümüz için dikkatli yorumlamak gerekir; yine de model kapasitesi, regülarizasyon ve örnek seçiminin etkileşimini göstermesi açısından rapora dahil edilmesi gereken anlamlı bir deneydir.
