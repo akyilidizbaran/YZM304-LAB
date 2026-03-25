@@ -56,7 +56,6 @@ Bu dosyalar, manuel model, `scikit-learn MLPClassifier` ve `PyTorch` modelinin a
 ├── reports/                          # Grafik, metrik ve split çıktıları
 ├── src/banknote_mlp/                 # Modüler deney kodu
 ├── tests/                            # Birim testleri
-├── PROJECT_MEMORY.md                 # Yerel proje hafızası
 ├── README.md
 ├── requirements.txt
 └── requirements-notebook.txt
