@@ -2,9 +2,9 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `YZM304-Banknote-MLP` için PDF yönergesine uygun repo iskeleti kuruluyor ve GitHub'a hazırlanıyor.
-* Son değişiklik neydi? Proje yönergesi incelendi; veri seti, laboratuvar notebook'u ve teslim beklentileri çıkarıldı.
-* Bir sonraki net adım ne? Dosyaları `data/`, `notebooks/`, `docs/` ve `src/` altında düzenleyip uzak repoya ilk push'u yapmak.
+* Şu an ne yapıyoruz? `YZM304-Banknote-MLP` için temel repo iskeleti kuruldu ve GitHub'a ilk push yapıldı.
+* Son değişiklik neydi? Veri, notebook ve PDF yönergesi klasör hiyerarşisine taşındı; README, `requirements.txt` ve başlangıç Python paketi eklendi.
+* Bir sonraki net adım ne? Temel notebook akışını modüler Python koduna ayırmak ve PDF'teki deney genişletmelerini uygulamak.
 
 ## 1) Proje Amacı ve Kapsam
 
@@ -50,21 +50,21 @@
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
 * 2026-03-25 — Milestone: PDF yönergesi analiz edildi. | Sonuç: Teslim için gereken klasör yapısı, README biçimi ve başlangıç hiperparametreleri netleştirildi.
+* 2026-03-25 — Milestone: İlk repo iskeleti kuruldu ve GitHub'a pushlandı. | Sonuç: `data/`, `docs/`, `notebooks/`, `reports/`, `src/` ve `tests/` yapısı oluşturuldu; uzak repo ile `main` dalı eşitlendi.
 
 ## 8) Yapılanlar
 
 * [x] PDF yönergesi metin olarak çıkarıldı ve gereksinimler belirlendi.
 * [x] Mevcut veri seti ve laboratuvar notebook'u tespit edildi.
-* [ ] Dosya yapısı organize edildi.
-* [ ] Uzak repoya ilk push yapıldı.
+* [x] Dosya yapısı organize edildi.
+* [x] Uzak repoya ilk push yapıldı.
 
 ## 9) Yapılacaklar (Next)
 
-* [ ] Mevcut CSV dosyasını `data/raw/` altına taşı.
-* [ ] Notebook'u `notebooks/` altına taşı ve veri yolunu güncelle.
-* [ ] PDF yönergesini `docs/assignment/` altında sakla.
-* [ ] Kaynak kod için `src/banknote_mlp/` başlangıç modüllerini ekle.
-* [ ] Git deposunu başlat, commit oluştur ve `https://github.com/akyilidizbaran/YZM304-LAB` adresine push et.
+* [ ] Notebook içindeki temel MLP akışını modüler Python koduna taşı.
+* [ ] Doğrulama seti, overfitting-underfitting analizi ve alternatif model deneyleri ekle.
+* [ ] Karışıklık matrisi ve temel metrik çıktılarını `reports/` altında üret.
+* [ ] `scikit-learn` veya `PyTorch` ile eşdeğer model karşılaştırmasını ekle.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
 
@@ -74,9 +74,8 @@
 ## 11) Notlar ve Tuzaklar (Pitfalls)
 
 * Notebook'taki veri okuma satırı `BankNote_Authentication.csv` ismini kullanıyor; gerçek dosya adı `banknote_authentication.csv`.
-* Uzak GitHub deposu şu an boş görünüyor; ilk push doğrudan bu çalışma dizininden yapılabilir.
+* Uzak GitHub deposu `https://github.com/akyilidizbaran/YZM304-LAB` adresine `main` dalı ile bağlandı.
 
 ### Güncelleme Kaydı
 
 * Son güncelleme: 2026-03-25
-
