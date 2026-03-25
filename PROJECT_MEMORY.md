@@ -2,15 +2,15 @@
 
 ## 0) TL;DR (En güncel durum)
 
-* Şu an ne yapıyoruz? `YZM304-Banknote-MLP` için temel repo iskeleti kuruldu ve GitHub'a ilk push yapıldı.
-* Son değişiklik neydi? Veri, notebook ve PDF yönergesi klasör hiyerarşisine taşındı; README, `requirements.txt` ve başlangıç Python paketi eklendi.
-* Bir sonraki net adım ne? Temel notebook akışını modüler Python koduna ayırmak ve PDF'teki deney genişletmelerini uygulamak.
+* Şu an ne yapıyoruz? `YZM304-Banknote-MLP` için modüler deney hattısı kuruldu, temel deneyler üretildi ve rapor artefaktları repo içine yazıldı.
+* Son değişiklik neydi? Manuel MLP, veri ayrımı, metrik üretimi, sklearn karşılaştırması ve deney script'i eklendi; `reports/` altında sonuçlar üretildi.
+* Bir sonraki net adım ne? Notebook'u yeni modülleri kullanacak şekilde sadeleştirmek ve istenirse `PyTorch` eşleniğini eklemek.
 
 ## 1) Proje Amacı ve Kapsam
 
 * Amaç: Banknote authentication veri seti üzerinde laboratuvarda kurulan tek gizli katmanlı MLP çalışmasını tekrar üretilebilir proje yapısına taşımak ve PDF yönergesindeki deneyleri bu temel üstünde yürütmek.
-* Kapsam içi: Veri seti organizasyonu, notebook düzenleme, IMRAD biçimli README, deney sonuç klasörleri, ileride eklenecek manuel MLP ve kütüphane tabanlı yeniden yazımlar.
-* Kapsam dışı: Bu aşamada tam deney sonuçlarının tamamlanması ve ileri model varyantlarının tümünün uygulanması.
+* Kapsam içi: Veri seti organizasyonu, notebook düzenleme, IMRAD biçimli README, deney sonuç klasörleri, manuel MLP ve `scikit-learn` tabanlı yeniden yazım.
+* Kapsam dışı: Bu aşamada `PyTorch` implementasyonu ve tüm ileri düzenlileştirme tekniklerinin tamamlanması.
 
 ## 2) Non-negotiables / Kırmızı Çizgiler
 
@@ -21,9 +21,9 @@
 
 ## 3) Mimari Özet
 
-* Bileşenler: Ham veri seti, laboratuvar notebook'u, Python kaynak kodu için `src/`, deney çıktıları için `reports/`.
-* Veri akışı: `data/raw` içindeki CSV notebook ve ileride eklenecek Python modülleri tarafından okunacak; deney çıktıları `reports/` altında tutulacak.
-* Önemli dizinler/modüller: `data/raw/`, `docs/assignment/`, `notebooks/`, `src/banknote_mlp/`, `reports/`.
+* Bileşenler: Ham veri seti, laboratuvar notebook'u, Python kaynak kodu için `src/`, deney çıktıları için `reports/`, temel testler için `tests/`.
+* Veri akışı: `data/raw` içindeki CSV, `src/banknote_mlp/data.py` ile ayrılıyor; manuel ve sklearn modelleri `src/banknote_mlp/` altında eğitiliyor; deney çıktıları `reports/` altında tutuluyor.
+* Önemli dizinler/modüller: `data/raw/`, `docs/assignment/`, `notebooks/`, `src/banknote_mlp/`, `reports/`, `tests/`.
 
 ## 4) Konvansiyonlar ve Standartlar
 
@@ -33,24 +33,29 @@
 
 ## 5) Kurulum & Çalıştırma
 
-* Gereksinimler: Python 3, `venv`, Jupyter Notebook.
+* Gereksinimler: Python 3, `venv`.
 * Komutlar:
   * `python3 -m venv .venv`
   * `source .venv/bin/activate`
   * `pip install -r requirements.txt`
+  * `PYTHONPATH=src python -m banknote_mlp.experiment`
+  * `pip install -r requirements-notebook.txt`
   * `jupyter notebook notebooks/one_hidden_layer_mlp.ipynb`
-* Ortam değişkenleri (sadece İSİMLER): Yok.
-* Lokal geliştirme notları: Notebook veri yolunun repo içi klasör yapısına göre korunması gerekir.
+* Ortam değişkenleri (sadece İSİMLER): `PYTHONPATH`
+* Lokal geliştirme notları: Hafif deney kurulumu `requirements.txt`; notebook için ek bağımlılıklar `requirements-notebook.txt`.
 
 ## 6) Decision Log (append-only)
 
 * 2026-03-25 — Karar: Proje adı `YZM304-Banknote-MLP` olarak kullanılacak. | Gerekçe: Kullanıcı tarafından açıkça belirtildi. | Etki: README başlığı, proje hafızası ve GitHub teslim dili bu adla hizalanacak. | Alternatifler: Yok.
 * 2026-03-25 — Karar: Repo yapısı `data`, `docs`, `notebooks`, `reports`, `src`, `tests` ekseninde kurulacak. | Gerekçe: PDF yönergesi uygun klasör hiyerarşisi ve tekrar üretilebilirlik istiyor. | Etki: Mevcut veri, notebook ve yönerge dosyaları taşınacak; yeni modüller bu yapı altında geliştirilecek. | Alternatifler: Tüm dosyaları kökte tutmak.
+* 2026-03-25 — Karar: Çalıştırılabilir deney hattı manuel MLP + `scikit-learn MLPClassifier` karşılaştırması şeklinde modülerleştirilecek. | Gerekçe: PDF, laboratuvar modelinin yeniden yazımı ve kütüphane tabanlı karşılaştırma istiyor. | Etki: `src/banknote_mlp/` altında veri, model, metrik ve deney modülleri eklendi. | Alternatifler: Tüm mantığı notebook içinde bırakmak.
+* 2026-03-25 — Karar: Hafif çalışma ortamı için `requirements.txt`, notebook ekleri için `requirements-notebook.txt` kullanılacak. | Gerekçe: Jupyter bağımlılıklarını ana deney hattısından ayırmak kurulumu hızlandırıyor. | Etki: CLI deney komutu daha hızlı kuruluyor; notebook kullanımı ayrı dosyada korunuyor. | Alternatifler: Tüm bağımlılıkları tek dosyada tutmak.
 
 ## 7) Milestones / Dönüm Noktaları (append-only)
 
 * 2026-03-25 — Milestone: PDF yönergesi analiz edildi. | Sonuç: Teslim için gereken klasör yapısı, README biçimi ve başlangıç hiperparametreleri netleştirildi.
 * 2026-03-25 — Milestone: İlk repo iskeleti kuruldu ve GitHub'a pushlandı. | Sonuç: `data/`, `docs/`, `notebooks/`, `reports/`, `src/` ve `tests/` yapısı oluşturuldu; uzak repo ile `main` dalı eşitlendi.
+* 2026-03-25 — Milestone: Modüler deney hattı çalıştırıldı. | Sonuç: Manuel MLP, derin varyant ve sklearn karşılaştırması için metrikler, karmaşıklık matrisleri ve öğrenme eğrileri üretildi.
 
 ## 8) Yapılanlar
 
@@ -58,23 +63,26 @@
 * [x] Mevcut veri seti ve laboratuvar notebook'u tespit edildi.
 * [x] Dosya yapısı organize edildi.
 * [x] Uzak repoya ilk push yapıldı.
+* [x] Modüler veri ayrımı, manuel MLP ve sklearn deney hattısı yazıldı.
+* [x] Deney çıktıları `reports/` altında üretildi.
 
 ## 9) Yapılacaklar (Next)
 
-* [ ] Notebook içindeki temel MLP akışını modüler Python koduna taşı.
-* [ ] Doğrulama seti, overfitting-underfitting analizi ve alternatif model deneyleri ekle.
-* [ ] Karışıklık matrisi ve temel metrik çıktılarını `reports/` altında üret.
-* [ ] `scikit-learn` veya `PyTorch` ile eşdeğer model karşılaştırmasını ekle.
+* [ ] Notebook'u `src/banknote_mlp` modüllerini kullanacak şekilde sadeleştir.
+* [ ] `PyTorch` ile eşdeğer model karşılaştırmasını ekle.
+* [ ] Overfitting-underfitting yorumunu README içinde daha ayrıntılı yaz.
+* [ ] İstenirse mini-batch ya da batch normalization deneyi ekle.
 
 ## 10) Bilinen Sorunlar / Teknik Borç / Riskler
 
-* Mevcut notebook doğrudan kök dizindeki dosya adına bağımlı; taşınmadan sonra veri yolu düzeltilmezse kırılır.
-* Deney çıktıları ve alternatif model implementasyonları henüz eklenmedi.
+* `scikit-learn` tarafında aynı başlangıç ağırlıklarını manuel model ile birebir eşlemek pratik değil; karşılaştırma mimari ve optimizasyon ayarları üzerinden yaklaşık tutuluyor.
+* Notebook henüz modüler Python kodunu kullanacak şekilde yeniden yazılmadı; şu an referans laboratuvar çalışması olarak duruyor.
 
 ## 11) Notlar ve Tuzaklar (Pitfalls)
 
-* Notebook'taki veri okuma satırı `BankNote_Authentication.csv` ismini kullanıyor; gerçek dosya adı `banknote_authentication.csv`.
+* Notebook veri yolu repo yapısına göre `../data/raw/banknote_authentication.csv` olarak düzeltildi; fakat eğitim mantığı hala notebook içinde kopya halde duruyor.
 * Uzak GitHub deposu `https://github.com/akyilidizbaran/YZM304-LAB` adresine `main` dalı ile bağlandı.
+* `reports/metrics/experiment_summary.md` seçim kuralına göre en iyi modeli verir; test doğruluğu en yüksek model farklı olabilir.
 
 ### Güncelleme Kaydı
 

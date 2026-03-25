@@ -5,9 +5,3 @@ __pycache__/
 .ipynb_checkpoints/
 
 tmp/
-reports/figures/*
-!reports/figures/.gitkeep
-reports/metrics/*
-!reports/metrics/.gitkeep
-reports/models/*
-!reports/models/.gitkeep

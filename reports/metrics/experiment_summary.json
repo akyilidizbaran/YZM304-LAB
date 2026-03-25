@@ -1,0 +1,67 @@
+{
+  "project": "YZM304-Banknote-MLP",
+  "selection_rule": "highest_validation_accuracy_then_lowest_steps",
+  "best_experiment": "manual_raw_baseline",
+  "results": [
+    {
+      "experiment_name": "manual_raw_baseline",
+      "model_type": "manual",
+      "standardize": false,
+      "hidden_layers": "6",
+      "steps": 500,
+      "learning_rate": 0.01,
+      "l2_lambda": 0.0,
+      "train_accuracy": 0.9681093394077449,
+      "validation_accuracy": 0.9727272727272728,
+      "test_accuracy": 0.9635036496350365,
+      "test_precision": 0.9912280701754386,
+      "test_recall": 0.9262295081967213,
+      "test_f1_score": 0.9576271186440678
+    },
+    {
+      "experiment_name": "manual_standardized_baseline",
+      "model_type": "manual",
+      "standardize": true,
+      "hidden_layers": "6",
+      "steps": 1000,
+      "learning_rate": 0.03,
+      "l2_lambda": 0.0,
+      "train_accuracy": 0.9817767653758542,
+      "validation_accuracy": 0.9636363636363636,
+      "test_accuracy": 0.9744525547445255,
+      "test_precision": 0.952755905511811,
+      "test_recall": 0.9918032786885246,
+      "test_f1_score": 0.9718875502008032
+    },
+    {
+      "experiment_name": "manual_regularized_deeper",
+      "model_type": "manual",
+      "standardize": true,
+      "hidden_layers": "10-6",
+      "steps": 1000,
+      "learning_rate": 0.01,
+      "l2_lambda": 0.001,
+      "train_accuracy": 0.9783599088838268,
+      "validation_accuracy": 0.9590909090909091,
+      "test_accuracy": 0.9708029197080292,
+      "test_precision": 0.9453125,
+      "test_recall": 0.9918032786885246,
+      "test_f1_score": 0.968
+    },
+    {
+      "experiment_name": "sklearn_standardized_baseline",
+      "model_type": "sklearn",
+      "standardize": true,
+      "hidden_layers": "6",
+      "steps": 1000,
+      "learning_rate": 0.01,
+      "l2_lambda": 0.0,
+      "train_accuracy": 0.9738041002277904,
+      "validation_accuracy": 0.9590909090909091,
+      "test_accuracy": 0.9708029197080292,
+      "test_precision": 0.9523809523809523,
+      "test_recall": 0.9836065573770492,
+      "test_f1_score": 0.9677419354838709
+    }
+  ]
+}

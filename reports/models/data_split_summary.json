@@ -1,0 +1,17 @@
+{
+  "feature_names": [
+    "variance",
+    "skewness",
+    "curtosis",
+    "entropy"
+  ],
+  "class_balance_total": {
+    "0": 762,
+    "1": 610
+  },
+  "split_sizes": {
+    "train": 878,
+    "validation": 220,
+    "test": 274
+  }
+}
