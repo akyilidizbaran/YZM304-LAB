@@ -1,0 +1,41 @@
+{
+  "dataset": "sklearn.datasets.load_digits",
+  "image_shape": [
+    1,
+    8,
+    8
+  ],
+  "classes": 10,
+  "samples_total": 1797,
+  "train_samples_for_cnn": 1149,
+  "val_samples_for_cnn": 288,
+  "trainval_samples_for_hybrid": 1437,
+  "test_samples": 360,
+  "normalization_mean_from_train": 0.30611878633499146,
+  "normalization_std_from_train": 0.3765529692173004,
+  "config": {
+    "batch_size": 64,
+    "epochs": 18,
+    "learning_rate": 0.001,
+    "optimizer": "Adam",
+    "loss": "CrossEntropyLoss",
+    "random_state": 42
+  },
+  "feature_shapes": {
+    "train_features_shape": [
+      1437,
+      64
+    ],
+    "train_labels_shape": [
+      1437
+    ],
+    "test_features_shape": [
+      360,
+      64
+    ],
+    "test_labels_shape": [
+      360
+    ],
+    "feature_source": "improved_batchnorm_dropout_cnn.extract_features"
+  }
+}

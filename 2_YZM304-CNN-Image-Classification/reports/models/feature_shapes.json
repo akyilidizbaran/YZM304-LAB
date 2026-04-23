@@ -1,0 +1,17 @@
+{
+  "train_features_shape": [
+    1437,
+    64
+  ],
+  "train_labels_shape": [
+    1437
+  ],
+  "test_features_shape": [
+    360,
+    64
+  ],
+  "test_labels_shape": [
+    360
+  ],
+  "feature_source": "improved_batchnorm_dropout_cnn.extract_features"
+}
