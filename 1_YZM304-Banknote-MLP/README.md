@@ -18,7 +18,7 @@ Bu raporda üç ana araştırma sorusu ele alınır:
 
 ### Veri Seti
 
-- Veri dosyası: `../data/raw/banknote_authentication.csv`
+- Veri dosyası: `data/raw/banknote_authentication.csv`
 - Problem tipi: ikili sınıflandırma
 - Özellikler: `variance`, `skewness`, `curtosis`, `entropy`
 - Hedef değişken: `class`
@@ -53,13 +53,13 @@ Karşılaştırılan deneyler:
 
 ### Tekrar Üretilebilirlik
 
-Ortak split ve ağırlık artefaktları ana repoda tutulur:
+Ortak split ve ağırlık artefaktları bu proje klasöründe tutulur:
 
-- Split manifesti: `../data/splits/split_manifest.json`
-- Tek gizli katman ağırlıkları: `../data/weights/4-6-1.npz`
-- Derin model ağırlıkları: `../data/weights/4-10-6-1.npz`
-- Backend karşılaştırması: `artifacts/metrics/backend_comparison.csv`
-- Tüm deney tablosu: `artifacts/metrics/experiment_comparison.csv`
+- Split manifesti: `data/splits/split_manifest.json`
+- Tek gizli katman ağırlıkları: `data/weights/4-6-1.npz`
+- Derin model ağırlıkları: `data/weights/4-10-6-1.npz`
+- Backend karşılaştırması: `reports/metrics/backend_comparison.csv`
+- Tüm deney tablosu: `reports/metrics/experiment_comparison.csv`
 
 Çalıştırma:
 
@@ -99,8 +99,8 @@ PYTHONPATH=src python -m banknote_mlp.experiment
 - En yüksek doğrulama doğruluğu: `0.9727`
 - En yüksek test doğruluğu: `0.9745`
 - Aynı en yüksek test doğruluğunu veren deneyler: `manual_standardized_baseline`, `sklearn_standardized_baseline`, `pytorch_standardized_baseline`, `manual_regularized_deeper_data50`
-- Karmaşıklık matrisi görselleri: `artifacts/figures/*_confusion_matrix.png`
-- Öğrenme eğrileri: `artifacts/figures/learning_curves.png`
+- Karmaşıklık matrisi görselleri: `reports/figures/*_confusion_matrix.png`
+- Öğrenme eğrileri: `reports/figures/learning_curves.png`
 
 ## Discussion
 

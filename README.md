@@ -12,7 +12,7 @@ Ankara Üniversitesi Yapay Zeka ve Veri Mühendisliği `YZM304 Derin Öğrenme` 
 
 ## 1. Proje Özeti
 
-`1_YZM304-Banknote-MLP` klasörü, laboratuvarda kurulan MLP modelini tekrar üretilebilir hale getirir. Aynı veri ayrımı ve aynı başlangıç ağırlıklarıyla manuel, `scikit-learn` ve `PyTorch` backendleri karşılaştırılır. Sonuç tabloları, confusion matrix görselleri ve split özetleri klasör içindeki `artifacts/` altında bulunur.
+`1_YZM304-Banknote-MLP` klasörü, laboratuvarda kurulan MLP modelini tekrar üretilebilir hale getirir. Aynı veri ayrımı ve aynı başlangıç ağırlıklarıyla manuel, `scikit-learn` ve `PyTorch` backendleri karşılaştırılır. Kod, veri, testler ve sonuç çıktıları bu klasörün içinde self-contained olarak tutulur.
 
 Detaylı rapor: `1_YZM304-Banknote-MLP/README.md`
 
@@ -34,6 +34,7 @@ Detaylı rapor: `2_YZM304-CNN-Image-Classification/README.md`
 1. proje ana deney hattı:
 
 ```bash
+cd 1_YZM304-Banknote-MLP
 PYTHONPATH=src python -m banknote_mlp.experiment
 ```
 

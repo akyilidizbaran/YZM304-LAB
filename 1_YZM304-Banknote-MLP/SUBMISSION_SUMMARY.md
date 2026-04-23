@@ -10,7 +10,7 @@
 
 ## Kapsam
 
-Bu klasör, I. Proje Ödevi için ana repo README bilgisinden türetilmiş teslim raporunu ve sonuç artefaktlarını içerir. Ders PPTX ve proje PDF kaynakları bu klasöre gömülmemiştir; ayrı olarak `../course_materials/` altında tutulur.
+Bu klasör, I. Proje Ödevi için çalıştırılabilir kodu, veri dosyalarını, testleri, raporu ve sonuç artefaktlarını içerir. Ders PPTX ve proje PDF kaynakları bu klasöre gömülmemiştir; ayrı olarak `../course_materials/` altında tutulur.
 
 ## Dosya Yapısı
 
@@ -18,7 +18,13 @@ Bu klasör, I. Proje Ödevi için ana repo README bilgisinden türetilmiş tesli
 1_YZM304-Banknote-MLP/
 ├── README.md
 ├── SUBMISSION_SUMMARY.md
-└── artifacts/
+├── data/
+├── notebooks/
+├── src/
+├── tests/
+├── requirements.txt
+├── requirements-notebook.txt
+└── reports/
     ├── figures/
     ├── metrics/
     └── models/
